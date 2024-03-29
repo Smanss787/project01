@@ -10,7 +10,7 @@ on:
     branches: [ main ]
 
 env:
-  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  IMAGE_REGISTRY: ghcr.io/smanss787
   
 jobs:
   build:
@@ -44,7 +44,7 @@ jobs:
           cache: maven
       - name: Build image with Maven Wrapper
         run: | 
-          sed -i "s/_SET_BY_CI_FROM_GIT_/${{ github.sha }}/" pom.xml
+          sed -i "s/0.0.1-SNAPSHOT/${{ github.sha }}/" pom.xml
           mvn -B spring-boot:build-image -DskipTests
           docker login -u ${{ github.actor }} -p ${{ github.token }} ${{ env.IMAGE_REGISTRY }}
           docker tag spring-petclinic:${{ github.sha }} ${{ env.IMAGE_REGISTRY }}/spring-petclinic:${{ github.sha }}
